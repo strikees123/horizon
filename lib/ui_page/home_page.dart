@@ -1,7 +1,5 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
-import 'package:horizon/backend/server.dart';
-import 'package:horizon/signin/signin.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,31 +10,26 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: GestureDetector(
-            child: Text("press me"),
-            onTap: () {
-              Methods().signOut();
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => SignIn()));
-            }),
+      body: Center(child: Text("subash")),
+      appBar: AppBar(
+        title: Text(
+          "EventSnap",
+          style: TextStyle(fontSize: 19),
+        ),
+        centerTitle: true,
       ),
       drawer: Drawer(
           child: ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text("subash")),
-          ListTile(
-            title: Text("Profile"),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
+              child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage('assets/images/pngwing.png'),
+              )
+            ],
+          )),
           ListTile(
             title: Text("About Us"),
             onTap: () {

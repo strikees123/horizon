@@ -45,6 +45,7 @@ class _SignInState extends State<SignIn> {
               userPasswordTextEditingController.text.trim())
           .then((val) {
         if (val != null) {
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));
         }
