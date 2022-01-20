@@ -1,6 +1,7 @@
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:horizon/backend/database.dart';
+import 'package:horizon/ui_page/eventDetails.dart';
 
 class EventPage extends StatefulWidget {
   final String name;
@@ -43,6 +44,7 @@ class _EventPageState extends State<EventPage> {
                       child: BuildEventName(
                         snapshot.data.docs[index]["name"],
                         snapshot.data.docs[index]["about"],
+                        widget.name,
                       ),
                     ),
                   );
@@ -71,7 +73,8 @@ class _EventPageState extends State<EventPage> {
 class BuildEventName extends StatefulWidget {
   final String mainEvent;
   final String about;
-  BuildEventName(this.mainEvent, this.about);
+  final String eventTitle;
+  BuildEventName(this.mainEvent, this.about,this.eventTitle);
   @override
   _BuildEventNameState createState() => _BuildEventNameState();
 }
@@ -80,25 +83,39 @@ class _BuildEventNameState extends State<BuildEventName> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
-      child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(26),
-              gradient: LinearGradient(
-                  colors: [Colors.lightGreen, Colors.blue, Colors.redAccent])),
-          padding: EdgeInsets.only(top: 30, bottom: 30),
-          child: Column(
-            children: [
-              Center(
-                  child: Text(
-                widget.mainEvent,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              )),
-            ],
-          )),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    EventDetails(widget.about, widget.mainEvent,widget.eventTitle)));
+      },
+      child: Material(
+        elevation: 10,
+        borderRadius: BorderRadius.circular(26),
+        shadowColor: Colors.blue,
+        child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(26),
+                gradient: LinearGradient(colors: [
+                  Colors.lightGreen,
+                  Colors.blue,
+                  Colors.redAccent
+                ])),
+            padding: EdgeInsets.only(top: 30, bottom: 30),
+            child: Column(
+              children: [
+                Center(
+                    child: Text(
+                  widget.mainEvent,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                )),
+              ],
+            )),
+      ),
     );
   }
 }

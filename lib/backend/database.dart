@@ -44,4 +44,9 @@ class Database {
         .orderBy("name", descending: false)
         .snapshots();
   }
+
+  addDetails(detailsMap) {
+    FirebaseFirestore.instance.collection("responses").add(detailsMap);
+  }
+
 }
