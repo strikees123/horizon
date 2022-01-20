@@ -19,7 +19,8 @@ class _RegistrationState extends State<Registration> {
   TextEditingController dep = new TextEditingController();
   TextEditingController number = new TextEditingController();
   TextEditingController rollNo = new TextEditingController();
-
+  TextEditingController email = new TextEditingController();
+  
   final snackBar = SnackBar(content: Text("Registered successfully"));
   uploadDetails() {
     if (formKey.currentState.validate()) {
@@ -31,6 +32,7 @@ class _RegistrationState extends State<Registration> {
         "dep": dep.text,
         "eventname": widget.eventName,
         "eventtitle": widget.eventTitle,
+        "email": email.text,
       };
       Database().addDetails(detailsMap);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -162,6 +164,33 @@ class _RegistrationState extends State<Registration> {
                                   borderSide: BorderSide(
                                       color: Colors.blue, width: 2.0)),
                               hintText: "Roll No",
+                              border: InputBorder.none),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Material(
+                      elevation: 2,
+                      shadowColor: Colors.blue.shade200,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: TextFormField(
+                          validator: (val) {
+                            return val == "" ? "Fill this Field" : null;
+                          },
+                          keyboardType: TextInputType.number,
+                          controller: email,
+                          decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.email),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0)),
+                              hintText: "valid email",
                               border: InputBorder.none),
                         ),
                       ),

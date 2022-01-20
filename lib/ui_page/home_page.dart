@@ -54,7 +54,8 @@ class _HomePageState extends State<HomePage> {
                         child: BuildListTile(
                             snapshot.data.docs[index]["name"],
                             snapshot.data.docs[index]["on"],
-                            snapshot.data.docs[index]["due"]),
+                            snapshot.data.docs[index]["due"],
+                            snapshot.data.docs[index]["timeStamp"].toDate()),
                       ),
                     );
                   })
@@ -123,11 +124,36 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class BuildListTile extends StatelessWidget {
+class BuildListTile extends StatefulWidget {
   final String eventName;
   final String on;
   final String due;
-  BuildListTile(this.eventName, this.on, this.due);
+  final DateTime timeOfDay;
+  BuildListTile(this.eventName, this.on, this.due, this.timeOfDay);
+
+  @override
+  _BuildListTileState createState() => _BuildListTileState();
+}
+
+class _BuildListTileState extends State<BuildListTile> {
+  DateTime dateTime = DateTime.now();
+  @override
+  void initState() {
+    checkTime();
+    super.initState();
+  }
+
+  checkTime() {
+    print(widget.timeOfDay);
+    print(dateTime);
+    if (widget.timeOfDay.isAfter(dateTime)) {
+      print("new: " + widget.eventName);
+    } else {
+      print("old: " + widget.eventName);
+      Database().deleteExpiredEvents(widget.eventName);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Shader linearGradient = LinearGradient(
@@ -136,8 +162,10 @@ class BuildListTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => EventPage(eventName)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EventPage(widget.eventName)));
       },
       child: Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 14),
@@ -164,7 +192,7 @@ class BuildListTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      eventName,
+                      widget.eventName,
                       style: TextStyle(
                           fontSize: 22,
                           fontStyle: FontStyle.italic,
@@ -175,7 +203,7 @@ class BuildListTile extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      "On: $on",
+                      "On: ${widget.on}",
                       style: TextStyle(
                           fontSize: 16,
                           fontStyle: FontStyle.italic,
@@ -189,7 +217,7 @@ class BuildListTile extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'Due: $due!',
+              'Due: ${widget.due}!',
               style: new TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

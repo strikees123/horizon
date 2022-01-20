@@ -49,4 +49,7 @@ class Database {
     FirebaseFirestore.instance.collection("responses").add(detailsMap);
   }
 
+  deleteExpiredEvents(String eventName) {
+    FirebaseFirestore.instance.collection("events").doc(eventName).delete();
+  }
 }
