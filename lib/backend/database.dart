@@ -28,9 +28,20 @@ class Database {
     FirebaseFirestore.instance.collection("users").add(userInfo);
   }
 
-  getEventDetails() async {
-    final result =
-        await FirebaseFirestore.instance.collection("events").get();
-    return result;
+  geteventNames() {
+    return FirebaseFirestore.instance
+        .collection("events")
+        .where("name")
+        .orderBy("name", descending: true)
+        .snapshots();
+  }
+
+  getMainEventByName(String eventName) {
+    return FirebaseFirestore.instance
+        .collection("events")
+        .doc(eventName)
+        .collection("event")
+        .orderBy("name", descending: false)
+        .snapshots();
   }
 }
